@@ -6,7 +6,8 @@ requirejs.config({
       'jquery': '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min',
       'text': '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',
       'knockout': '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min',
-      'knockback': 'libs/knockback/0.17.2/knockback'
+      'knockback': 'libs/knockback/0.17.2/knockback',
+      'hammer': '//cdnjs.cloudflare.com/ajax/libs/hammer.js/1.0.5/hammer.min.js'
    },
    shim: {
       'backbone': {
@@ -31,7 +32,8 @@ define([
    'vm/add',
    'text!views/search.html',
    'vm/search',
-   'collections/books'
+   'collections/books',
+   'tap'
 ], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel, Books) {
 
    function switchView(view, ViewModel) {

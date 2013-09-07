@@ -2,10 +2,20 @@ var express = require('express');
 var less = require('less-middleware');
 var os = require('os');
 var mongoose = require('mongoose');
+var logentries = require('node-logentries');
+
+if (process.env.LOGENTRIES_TOKEN)
+   var log = logentries.logger({
+      token: process.env.LOGENTRIES_TOKEN
+   }).info;
+else
+   var log = console.log;
+
 
 if (process.env.VCAP_SERVICES) {
    var vcap_services = JSON.parse(process.env.VCAP_SERVICES);
-   var mongoOptions = evn['mongodb-1.8'][0]['credentials'];
+   var mongoOptions = vcap_services['mongodb-1.8'][0]['credentials'];
+   log(mongoOptions);
 }
 else {
    var mongoOptions = {
@@ -23,12 +33,6 @@ function generateMongoUrl(obj) {
       return 'mongodb://' + obj.username + ':' + obj.password + '@' + obj.hostname + ':' + obj.port + '/' + obj.db;
    else
       return 'mongodb://' + obj.hostname + ':' + obj.port + '/' + obj.db;
-}
-
-function matchStr(query, str) {
-   var q = query.toLowerCase();
-   var s = str.toLowerCase();
-   return s.indexOf(q) != -1;
 }
 
 
@@ -84,7 +88,7 @@ app.get('/books', function(req, res) {
 
    q.exec(function(err, docs) {
       if (err)
-         console.log(err);
+         log(err);
       else {
          res.json(docs);
       }
@@ -110,7 +114,7 @@ app.post('/books', function(req, res) {
 
    b.save(function(err, book) {
       if (err) {
-         console.log('failed');
+         log('failed');
       }
       else {
          res.setHeader('Location', '/books/' + book.id);
@@ -136,13 +140,13 @@ function listen() {
    var port = process.env.VCAP_APP_PORT || 3000;
    var host = (process.env.VCAP_APP_HOST || 'localhost');
    app.listen(port, host);
-   console.log('Listening on port ' + port);
+   log('Listening on port ' + port);
 }
 
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error: '));
 db.once('open', function() {
-   console.log('Connected to mongo');
+   log('Connected to mongo');
    listen();
 });

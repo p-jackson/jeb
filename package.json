@@ -4,6 +4,7 @@
   "dependencies": {
     "express": "3.x",
     "less-middleware": "~0.1.12",
-    "mongoose": "~3.6.19"
+    "mongoose": "~3.6.19",
+    "node-logentries": "~0.1.2"
   }
 }

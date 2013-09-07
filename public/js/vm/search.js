@@ -1,4 +1,4 @@
-define(['knockout', 'knockback', 'backbone', 'models/Book'], function(ko, kb, Backbone, Book) {
+define(['knockout', 'knockback', 'backbone', 'models/book'], function(ko, kb, Backbone, Book) {
 
    function SearchViewModel(router) {
       this.searchTerm = ko.observable('');

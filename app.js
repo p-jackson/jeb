@@ -1,7 +1,7 @@
 var express = require('express');
 var less = require('less-middleware');
 var os = require('os');
-var mongo = require('mongodb');
+var mongoose = require('mongoose');
 
 if (process.env.VCAP_SERVICES) {
    var vcap_services = JSON.parse(process.env.VCAP_SERVICES);
@@ -31,38 +31,18 @@ function matchStr(query, str) {
    return s.indexOf(q) != -1;
 }
 
-function filterBooks(query) {
-   var result = [];
-   var matches = matchStr.bind(undefined, query);
-   for (var i = 0; i < books.length; ++i) {
-      var b = books[i];
-      if (matches(b.title))
-         result.push(b);
-      else if(matches(b.author))
-         result.push(b);
-   }
-   return result;
-}
 
 var mongoUrl = generateMongoUrl(mongoOptions);
+mongoose.connect(mongoUrl);
+
+var bookSchema = mongoose.Schema({
+   title: String,
+   author: String   
+});
+var Book = mongoose.model('Book', bookSchema);
 
 var app = express();
 
-var books = [
-   { title: 'Emma', author: 'Jane Austin' },
-   { title: 'Pride and Prejudice', author: 'Jane Austin' },
-   { title: 'Bleak House', author: 'Charles Dickens' }
-];
-
-function invalidBookIndex(req, res) {
-   if (books.length <= req.params.index || req.params.index < 0) {
-      res.statusCode = 404;
-      res.json('Book not found');
-      return true;
-   }
-
-   return false;
-}
 
 var sendIndex = function(req, res) {
    res.sendfile(__dirname + '/public/index.html');
@@ -91,40 +71,78 @@ app.use(express.logger('dev'));
 
 app.get('/books', function(req, res) {
    if (!req.query || !req.query.q)
-      res.json(books);
-   else
-      res.json(filterBooks(req.query.q));
+      var q = Book.find();
+   else {
+      var re = new RegExp(req.query.q, 'i');
+      var q = Book.find({
+         $or: [
+            { title: re },
+            { author: re }
+         ]
+      });
+   }
+
+   q.exec(function(err, docs) {
+      if (err)
+         console.log(err);
+      else {
+         res.json(docs);
+      }
+   });
 });
 
 app.get('/books/:index', function(req, res) {
-   if (invalidBookIndex(req, res))
-      return;
-
-   res.json(books[req.params.index]);
+   Book.findById(req.params.index).exec(function(err, book) {
+      if (err) {
+         res.statusCode = 404;
+         res.json('Book not found');
+      }
+      else
+         res.json(book.toObject());
+   });
 });
 
 app.post('/books', function(req, res) {
-   books.push({
+   var b = new Book({
       title: req.body.title,
       author: req.body.author
    });
 
-   res.setHeader('Location', '/books/' + (books.length - 1));
-   res.statusCode = 201;
-   res.json(true);
+   b.save(function(err, book) {
+      if (err) {
+         console.log('failed');
+      }
+      else {
+         res.setHeader('Location', '/books/' + book.id);
+         res.statusCode = 201;
+         res.json(true);
+      }
+   });
 });
 
 app.delete('/books/:index', function(req, res) {
-   if (invalidBookIndex(req, res))
-      return;
-
-   books.splice(req.params.index, 1);
-   res.json(true);
+   Book.findByIdAndRemove(req.params.index, function(err, book) {
+      if (err) {
+         res.statusCode = 404;
+         res.json('Book not found');
+      }
+      else
+         res.json(true);
+   });
 });
 
 
+function listen() {
+   var port = process.env.VCAP_APP_PORT || 3000;
+   var host = (process.env.VCAP_APP_HOST || 'localhost');
+   app.listen(port, host);
+   console.log('Listening on port ' + port);
+}
 
-var port = process.env.VCAP_APP_PORT || 3000;
-var host = (process.env.VCAP_APP_HOST || 'localhost');
-app.listen(port, host);
-console.log('Listening on port ' + port);
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error: '));
+db.once('open', function() {
+   console.log('Connected to mongo');
+   listen();
+});

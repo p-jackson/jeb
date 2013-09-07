@@ -1,7 +1,8 @@
-define(['knockout'], function(ko) {
+define(['knockout', 'knockback', 'backbone', 'models/Book'], function(ko, kb, Backbone, Book) {
+
    function SearchViewModel(router) {
       this.searchTerm = ko.observable('');
-      this.books = ko.observableArray([]);
+      this.books = kb.collectionObservable();
 
       this._router = router;
    }
@@ -11,7 +12,18 @@ define(['knockout'], function(ko) {
    };
 
    SearchViewModel.prototype.onSearch = function() {
-      
+      var c = new Backbone.Collection([], {
+         model: Book,
+         url: '/books?q=' + this.searchTerm()
+      });
+
+      c.fetch({
+         reset: true,
+         success: function() {
+            this.books.collection(c);
+            console.log('go');
+         }.bind(this)
+      });
    };
 
    return SearchViewModel;

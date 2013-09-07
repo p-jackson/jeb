@@ -5,7 +5,8 @@ requirejs.config({
       'underscore': '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min',
       'jquery': '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min',
       'text': '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',
-      'knockout': '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min'
+      'knockout': '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min',
+      'knockback': 'libs/knockback/0.17.2/knockback'
    },
    shim: {
       'backbone': {
@@ -61,14 +62,6 @@ define([
    });
 
    var router = new Workspace();
-
-   var b = new Books();
-   b.fetch({
-      reset: true,
-      success: function() {
-         console.log(b.toJSON());
-      }
-   });
 
    Backbone.history.start({ pushState: true });
 });

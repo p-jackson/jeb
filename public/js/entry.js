@@ -28,8 +28,10 @@ define([
    'text!views/home.html',
    'vm/home',
    'text!views/add.html',
-   'vm/add'
-], function(Backbone, ko, $, homeView, HomeViewModel, addView, AddViewModel) {
+   'vm/add',
+   'text!views/search.html',
+   'vm/search'
+], function(Backbone, ko, $, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel) {
 
    function switchView(view, ViewModel) {
       var c = document.getElementById('viewContainer');
@@ -51,6 +53,10 @@ define([
 
       add: function() {
          switchView(addView, AddViewModel);
+      },
+
+      search: function() {
+         switchView(searchView, SearchViewModel);
       }
    });
 

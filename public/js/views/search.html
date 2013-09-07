@@ -1,0 +1,14 @@
+<div class="searchView appView">
+   <form data-bind="submit: onSearch">
+      <label class="searchLabel" data-bind="css: { 'searchLabel-hasText': searchTerm }">Search</label>
+      <input type="text" class="searchField" data-bind="value: searchTerm, valueUpdate: 'input'">
+      <button class="searchButton blue">Go</button>
+   </form>
+   <ol data-bind="foreach: books">
+      <li>
+         <span class="title" data-bind="text: title"></span>
+         <span class="author" data-bind="text: author"></span>
+      </li>
+   </ol>
+   <button class="widthButton orange backButton" data-bind="click: onBack">Back</button>
+</div>

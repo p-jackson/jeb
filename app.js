@@ -1,4 +1,6 @@
 var express = require('express');
+var less = require('less-middleware');
+var os = require('os');
 
 var app = express();
 
@@ -22,9 +24,18 @@ var sendIndex = function(req, res) {
    res.sendfile(__dirname + '/public/index.html');
 };
 
+var tmpDir = os.tmpDir();
+
 app.use(express.bodyParser());
 
+app.use(less({
+   src: __dirname + '/public',
+   dest: tmpDir,
+   force: true
+}));
+
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(tmpDir));
 app.get('/add', sendIndex);
 app.get('/search', sendIndex);
 

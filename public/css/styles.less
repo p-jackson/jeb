@@ -10,13 +10,17 @@ body, html {
 body {
    font-family: 'Merriweather', serif;
    font-size: 24px;
-   background-color: #fdf6e3;
-   color: #586e75;
+   background-color: @base3;
+   color: @base00;
 }
 
 * {
    box-sizing: border-box;
    -moz-box-sizing: border-box;
+}
+
+input {
+   color: @base00;
 }
 
 input:focus {
@@ -63,10 +67,12 @@ input:focus {
    }
 
    .inputRow label {
-      min-width: 100px;
+      min-width: 107px;
       display: table-cell;
       font-weight: 700;
       line-height: 50px;
+      text-align: right;
+      padding-right: 10px;
    }
 
    .inputRow input {
@@ -103,6 +109,7 @@ input:focus {
       border-bottom: 1px solid @blue;
       .flex(0px);
       .flex-grow(1);
+      color: @base01;
    }
 
    .searchButton {

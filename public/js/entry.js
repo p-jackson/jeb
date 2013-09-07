@@ -1,21 +1,21 @@
 requirejs.config({
    baseUrl: '/js',
    paths: {
-      'backbone': 'libs/backbone/1.0.0/backbone',
-      'underscore': 'libs/underscore/1.5.1/underscore',
-      'zepto': 'libs/zepto/1.0-1/zepto',
-      'text': 'libs/text/2.0.10/text',
-      'knockout': 'libs/knockout/2.3.0/knockout'
+      'backbone': '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min',
+      'underscore': '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min',
+      'jquery': '//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min',
+      'text': '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',
+      'knockout': '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min'
    },
    shim: {
       'backbone': {
-         deps: ['underscore', 'zepto'],
+         deps: ['underscore', 'jquery'],
          exports: 'Backbone'
       },
       'underscore': {
          exports: '_'
       },
-      'zepto': {
+      'jquery': {
          exports: '$'
       }
    }
@@ -24,14 +24,13 @@ requirejs.config({
 define([
    'backbone',
    'knockout',
-   'zepto',
    'text!views/home.html',
    'vm/home',
    'text!views/add.html',
    'vm/add',
    'text!views/search.html',
    'vm/search'
-], function(Backbone, ko, $, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel) {
+], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel) {
 
    function switchView(view, ViewModel) {
       var c = document.getElementById('viewContainer');

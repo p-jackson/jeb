@@ -2,6 +2,11 @@
 @import 'colours.less';
 @import 'flexbox.less';
 
+body, html {
+   width: 100%;
+   height: 100%;
+}
+
 body {
    font-family: 'Merriweather', serif;
    font-size: 24px;
@@ -21,7 +26,6 @@ input:focus {
 #viewContainer {
    width: 100%;
    height: 100%;
-   position: absolute;
 }
 
 .appView {
@@ -31,7 +35,8 @@ input:focus {
 
 
 .homeView {
-   display: table;
+   .flex-display;
+   .flex-direction(column);
 }
 
 
@@ -96,6 +101,7 @@ input:focus {
       line-height: 50px;
       height: 50px;
       border-bottom: 1px solid @blue;
+      .flex(0px);
       .flex-grow(1);
    }
 

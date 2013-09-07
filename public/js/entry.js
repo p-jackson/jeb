@@ -29,8 +29,9 @@ define([
    'text!views/add.html',
    'vm/add',
    'text!views/search.html',
-   'vm/search'
-], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel) {
+   'vm/search',
+   'collections/books'
+], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel, Books) {
 
    function switchView(view, ViewModel) {
       var c = document.getElementById('viewContainer');
@@ -60,6 +61,14 @@ define([
    });
 
    var router = new Workspace();
+
+   var b = new Books();
+   b.fetch({
+      reset: true,
+      success: function() {
+         console.log(b.toJSON());
+      }
+   });
 
    Backbone.history.start({ pushState: true });
 });

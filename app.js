@@ -1,6 +1,50 @@
 var express = require('express');
 var less = require('less-middleware');
 var os = require('os');
+var mongo = require('mongodb');
+
+if (process.env.VCAP_SERVICES) {
+   var vcap_services = JSON.parse(process.env.VCAP_SERVICES);
+   var mongoOptions = evn['mongodb-1.8'][0]['credentials'];
+}
+else {
+   var mongoOptions = {
+      hostname: 'localhost',
+      port: 27017,
+      username: '',
+      password: '',
+      name: '',
+      db: 'db'
+   };
+}
+
+function generateMongoUrl(obj) {
+   if (obj.username && obj.password)
+      return 'mongodb://' + obj.username + ':' + obj.password + '@' + obj.hostname + ':' + obj.port + '/' + obj.db;
+   else
+      return 'mongodb://' + obj.hostname + ':' + obj.port + '/' + obj.db;
+}
+
+function matchStr(query, str) {
+   var q = query.toLowerCase();
+   var s = str.toLowerCase();
+   return s.indexOf(q) != -1;
+}
+
+function filterBooks(query) {
+   var result = [];
+   var matches = matchStr.bind(undefined, query);
+   for (var i = 0; i < books.length; ++i) {
+      var b = books[i];
+      if (matches(b.title))
+         result.push(b);
+      else if(matches(b.author))
+         result.push(b);
+   }
+   return result;
+}
+
+var mongoUrl = generateMongoUrl(mongoOptions);
 
 var app = express();
 
@@ -27,6 +71,7 @@ var sendIndex = function(req, res) {
 var tmpDir = os.tmpDir();
 
 app.use(express.bodyParser());
+app.use(express.query());
 
 app.use(less({
    src: __dirname + '/public',
@@ -45,7 +90,10 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 
 app.get('/books', function(req, res) {
-   res.json(books);
+   if (!req.query || !req.query.q)
+      res.json(books);
+   else
+      res.json(filterBooks(req.query.q));
 });
 
 app.get('/books/:index', function(req, res) {
@@ -77,5 +125,6 @@ app.delete('/books/:index', function(req, res) {
 
 
 var port = process.env.VCAP_APP_PORT || 3000;
-app.listen(port);
+var host = (process.env.VCAP_APP_HOST || 'localhost');
+app.listen(port, host);
 console.log('Listening on port ' + port);

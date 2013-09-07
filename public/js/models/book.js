@@ -1,6 +1,6 @@
 define(['backbone'], function(Backbone) {
    return Backbone.Model.extend({
-      url: 'books',
+      url: '/books',
       
       defaults: {
          title: '',

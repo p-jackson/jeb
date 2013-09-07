@@ -7,7 +7,7 @@ requirejs.config({
       'text': '//cdnjs.cloudflare.com/ajax/libs/require-text/2.0.10/text',
       'knockout': '//cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min',
       'knockback': 'libs/knockback/0.17.2/knockback',
-      'hammer': '//cdnjs.cloudflare.com/ajax/libs/hammer.js/1.0.5/hammer.min.js'
+      'hammer': '//cdnjs.cloudflare.com/ajax/libs/hammer.js/1.0.5/hammer.min'
    },
    shim: {
       'backbone': {

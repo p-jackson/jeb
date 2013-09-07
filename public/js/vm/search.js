@@ -21,7 +21,6 @@ define(['knockout', 'knockback', 'backbone', 'models/Book'], function(ko, kb, Ba
          reset: true,
          success: function() {
             this.books.collection(c);
-            console.log('go');
          }.bind(this)
       });
    };

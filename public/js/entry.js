@@ -32,14 +32,17 @@ define([
    'vm/add',
    'text!views/search.html',
    'vm/search',
-   'collections/books',
+   'text!views/book.html',
+   'vm/book',
+   'models/book',
    'tap'
-], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel, Books) {
+], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel, bookView, BookViewModel, Book) {
 
-   function switchView(view, ViewModel) {
+   function switchView(view, ViewModel, model) {
       var c = document.getElementById('viewContainer');
       c.innerHTML = view;
-      ko.applyBindings(new ViewModel(router), c.firstChild);
+      var vm = model ? new ViewModel(model, router) : new ViewModel(router);
+      ko.applyBindings(vm, c.firstChild);
    }
 
    var Workspace = Backbone.Router.extend({
@@ -47,6 +50,7 @@ define([
          'home': 'home',
          'add': 'add',
          'search': 'search',
+         'view-book/:id': 'viewBook',
          '': 'home'
       },
 
@@ -60,10 +64,33 @@ define([
 
       search: function() {
          switchView(searchView, SearchViewModel);
+      },
+
+      viewBook: function(id) {
+         var book = new Book({ _id: id });
+         book.fetch();
+         switchView(bookView, BookViewModel, book);
       }
    });
 
    var router = new Workspace();
 
    Backbone.history.start({ pushState: true });
+
+   Backbone.on('showHome', function() {
+      router.navigate('', { trigger: true });
+   });
+
+   Backbone.on('showAdd', function() {
+      router.navigate('/add', { trigger: true });
+   });
+
+   Backbone.on('showSearch', function() {
+      router.navigate('/search', { trigger: true });
+   });
+
+   Backbone.on('showBook', function(book) {
+      switchView(bookView, BookViewModel, book);
+      router.navigate('view-book/' + book.id);
+   });
 });

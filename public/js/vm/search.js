@@ -1,14 +1,21 @@
 define(['knockout', 'knockback', 'backbone', 'models/book'], function(ko, kb, Backbone, Book) {
 
-   function SearchViewModel(router) {
-      this.searchTerm = ko.observable('');
-      this.books = kb.collectionObservable();
+   var BookViewModel = kb.ViewModel.extend({
+      open: function() {
+         Backbone.trigger('showBook', this.model());
+      }
+   });
 
-      this._router = router;
+
+   function SearchViewModel() {
+      this.searchTerm = ko.observable('');
+      this.books = kb.collectionObservable(new Backbone.Collection(), {
+         view_model: BookViewModel
+      });
    }
 
    SearchViewModel.prototype.onBack = function() {
-      this._router.navigate('', { trigger: true });
+      Backbone.trigger('showHome');
    };
 
    SearchViewModel.prototype.onSearch = function() {

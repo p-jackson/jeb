@@ -1,12 +1,12 @@
 define(function() {
 
-   return function(router) {
+   return function() {
       this.onAdd = function() {
-         router.navigate('/add', { trigger: true });
+         Backbone.trigger('showAdd');
       },
 
       this.onSearch = function() {
-         router.navigate('/search', { trigger: true });
+         Backbone.trigger('showSearch');
       }
    };
 

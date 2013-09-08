@@ -2,10 +2,10 @@
    <form data-bind="submit: onSearch">
       <label class="searchLabel" data-bind="css: { 'searchLabel-hasText': searchTerm }">Search</label>
       <input type="text" class="searchField" data-bind="value: searchTerm, valueUpdate: 'input'">
-      <button class="searchButton blue">Go</button>
+      <button class="searchButton blue" data-bind="tap: onSearch">Go</button>
    </form>
    <ol data-bind="foreach: books">
-      <li>
+      <li data-bind="tap: open">
          <span class="title" data-bind="text: title"></span>
          <span class="author" data-bind="text: author"></span>
       </li>

@@ -2,13 +2,21 @@
    <form data-bind="submit: onSubmit">
       <div class="inputRow">
          <label for="title">Title:</label>
-         <input type="text" id="title" data-bind="value: title, disable: adding">
+         <input type="text" id="title" data-bind="value: title, disable: adding" placeholder="e.g. Emma">
       </div>
       <div class="inputRow">
          <label for="author">Author:</label>
-         <input type="text" id="author" data-bind="value: author, disable: adding">
+         <input type="text" id="author" data-bind="value: author, disable: adding" placeholder="e.g. Jane Austen">
       </div>
-      <button type="submit" class="widthButton green addButton" data-bind="text: buttonText, disable: adding">Add</button>
+      <div class="inputRow">
+         <label for="publisher">Publisher:</label>
+         <input type="text" id="publisher" data-bind="value: publisher, disable: adding" placeholder="e.g. Puffin Books">
+      </div>
+      <div class="inputRow">
+         <label for="year">Year:</label>
+         <input type="text" id="year" data-bind="value: year, disable: adding" placeholder="e.g. 2011">
+      </div>
+      <button type="submit" class="widthButton green addButton" data-bind="text: buttonText, disable: adding, tap: onSubmit">Add</button>
    </form>
    <button class="widthButton orange backButton" data-bind="disable: adding, tap: onBack">Back</button>
 </div>

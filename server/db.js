@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
+var logger = require('./log');
 
 if (process.env.VCAP_SERVICES) {
    var vcap_services = JSON.parse(process.env.VCAP_SERVICES);
    var mongoOptions = vcap_services['mongodb-1.8'][0]['credentials'];
-   log(mongoOptions);
+   logger.log(mongoOptions);
 }
 else {
    var mongoOptions = {

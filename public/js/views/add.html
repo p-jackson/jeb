@@ -14,7 +14,7 @@
       </div>
       <div class="inputRow">
          <label for="year">Year:</label>
-         <input type="text" id="year" data-bind="value: year, disable: adding" placeholder="e.g. 2011">
+         <input type="number" pattern="\d*" id="year" data-bind="value: year, disable: adding" placeholder="e.g. 2011">
       </div>
       <button type="submit" class="widthButton green addButton" data-bind="text: buttonText, disable: adding, tap: onSubmit">Add</button>
    </form>

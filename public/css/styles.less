@@ -9,7 +9,7 @@ body, html {
 
 body {
    font-family: 'Merriweather', serif;
-   font-size: 24px;
+   font-size: 18px;
    background-color: @base3;
    color: @base00;
 }
@@ -17,6 +17,12 @@ body {
 * {
    box-sizing: border-box;
    -moz-box-sizing: border-box;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+   -webkit-appearance: none;
+   margin: 0;
 }
 
 input {
@@ -75,10 +81,12 @@ input:focus {
          text-align: right;
          background-color: transparent;
          border: none;
+         border-radius: 0;
       }
 
       input:focus {
          border-bottom: 1px solid @base01;
+         border-top: 1px solid transparent;
       }
    }
 
@@ -95,12 +103,16 @@ input:focus {
 
 
 .searchView {
+   @searchFieldHeight: 50px;
+
    form {
       .flex-display;
+      position: fixed;
+      width: 100%;
    }
 
    .searchLabel {
-      line-height: 50px;
+      line-height: @searchFieldHeight;
       padding: 0 8px;
       cursor: text;
       position: absolute;
@@ -114,9 +126,11 @@ input:focus {
    .searchField {
       padding: 0 8px;
       border: none;
-      line-height: 50px;
-      height: 50px;
+      line-height: @searchFieldHeight;
+      height: @searchFieldHeight;
       border-bottom: 1px solid @blue;
+      border-top: 1px solid transparent;
+      border-radius: 0;
       .flex(0px);
       .flex-grow(1);
       color: @base01;
@@ -124,14 +138,14 @@ input:focus {
 
    .searchButton {
       .flex-grow(0);
-      width: 50px;
-      height: 50px;
+      width: @searchFieldHeight;
+      height: @searchFieldHeight;
    }
 
    ol {
       list-style: none;
       margin: 0;
-      padding: 0 0 @widthButtonHeight 0;
+      padding: @searchFieldHeight 0 @widthButtonHeight 0;
    }
 
    li {
@@ -148,5 +162,9 @@ input:focus {
       .author {
          font-weight: 300;
       }
+   }
+
+   li:last-child {
+      border-bottom: none;
    }
 }

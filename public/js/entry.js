@@ -38,11 +38,15 @@ define([
    'tap'
 ], function(Backbone, ko, homeView, HomeViewModel, addView, AddViewModel, searchView, SearchViewModel, bookView, BookViewModel, Book) {
 
+   var clobberView = false;
+
    function switchView(view, ViewModel, model) {
       var c = document.getElementById('viewContainer');
-      c.innerHTML = view;
+      if (clobberView)
+         c.innerHTML = view;
+      clobberView = true;
       var vm = model ? new ViewModel(model, router) : new ViewModel(router);
-      ko.applyBindings(vm, c.firstChild);
+      ko.applyBindings(vm, c.querySelector('.appView'));
    }
 
    var Workspace = Backbone.Router.extend({

@@ -9,9 +9,15 @@ var api = require('./server/api');
 
 var app = express();
 
-var sendIndex = function(req, res) {
-   res.sendfile(__dirname + '/public/index.html');
-};
+app.engine('html', require('hogan-express'));
+app.set('views', __dirname + '/public/js/views');
+app.set('view engine', 'html');
+
+function sendIndex(view, req, res) {
+   return res.render('layout', {
+      partials: { view: view }
+   });
+}
 
 var tmpDir = os.tmpDir();
 
@@ -26,9 +32,11 @@ app.use(less({
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(tmpDir));
-app.get('/add', sendIndex);
-app.get('/search', sendIndex);
-app.get('/view-book/*', sendIndex);
+app.get('/', sendIndex.bind(undefined, 'home'));
+app.get('/home', sendIndex.bind(undefined, 'home'))
+app.get('/add', sendIndex.bind(undefined, 'add'));
+app.get('/search', sendIndex.bind(undefined, 'search'));
+app.get('/view-book/*', sendIndex.bind(undefined, 'book'));
 
 app.use(express.favicon());
 

@@ -2,10 +2,10 @@ var Book = require('./book').Book;
 var logger = require('./log');
 
 exports.setup = function(app) {
-   app.get('/books', getBooks);
-   app.get('/books/:id', getBooksId);
-   app.post('/books', postBooks);
-   app.delete('/books/:id', deleteBooksId);
+   app.get('/api/books', getBooks);
+   app.get('/api/books/:id', getBooksId);
+   app.post('/api/books', postBooks);
+   app.delete('/api/books/:id', deleteBooksId);
 };
 
 function getBooks(req, res) {

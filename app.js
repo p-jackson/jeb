@@ -36,7 +36,7 @@ app.get('/', sendIndex.bind(undefined, 'home'));
 app.get('/home', sendIndex.bind(undefined, 'home'))
 app.get('/add', sendIndex.bind(undefined, 'add'));
 app.get('/search', sendIndex.bind(undefined, 'search'));
-app.get('/view-book/*', sendIndex.bind(undefined, 'book'));
+app.get('/book/*', sendIndex.bind(undefined, 'book'));
 
 app.use(express.favicon());
 

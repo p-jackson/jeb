@@ -1,6 +1,6 @@
 define(['backbone', 'jquery'], function(Backbone, $) {
    return Backbone.Model.extend({
-      urlRoot: '/books',
+      urlRoot: '/api/books',
       idAttribute: '_id',
       
       defaults: {

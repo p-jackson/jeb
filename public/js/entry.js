@@ -95,6 +95,6 @@ define([
 
    Backbone.on('showBook', function(book) {
       switchView(bookView, BookViewModel, book);
-      router.navigate('view-book/' + book.id);
+      router.navigate('book/' + book.id);
    });
 });

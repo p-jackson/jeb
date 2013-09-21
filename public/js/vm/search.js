@@ -21,7 +21,7 @@ define(['knockout', 'knockback', 'backbone', 'models/book'], function(ko, kb, Ba
    SearchViewModel.prototype.onSearch = function() {
       var c = new Backbone.Collection([], {
          model: Book,
-         url: '/books?q=' + this.searchTerm()
+         url: '/api/books?q=' + this.searchTerm()
       });
 
       c.fetch({
